@@ -5,6 +5,7 @@ def hail(n):
     while n != 1 :
         if n%2 == 0:
             result_list.append(n)
+            # print(result_list)
             n = int(n / 2)
         else:
             result_list.append(n)
