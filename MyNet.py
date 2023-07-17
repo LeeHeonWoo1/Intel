@@ -23,7 +23,7 @@ class MyNet:
     def sigmoid(self, x):
         return 1/(1+np.exp(-x))
 
-    def fit_and_predict(self, kg, time): # 수정된 부분 : 사용자 입력값 두 개 입력받기
+    def fit_and_predict(self): # 수정된 부분 : 사용자 입력값 두 개 입력받기
         # 학습 시작과 동시에 가중치 배열 생성
         self.wt = self.get_weights()
         input_data = np.array([[80, 120], [100, 180], [90, 60], [72, 30]])
@@ -70,12 +70,11 @@ class MyNet:
                 self.wt[12] = self.wt[12] - self.alpha * dE_dw_12
             print("{} EPOCH-ERROR: {}".format(n, E))
 
-        kg = kg / 74
-        time = time / 60
-        u1 = self.sigmoid(self.wt[0]*kg + self.wt[3]*time + self.wt[6])
-        u2 = self.sigmoid(self.wt[1]*kg + self.wt[4]*time + self.wt[7])
-        u3 = self.sigmoid(self.wt[2]*kg + self.wt[5]*time + self.wt[8])
+        self.kg = self.kg / 74
+        self.time = self.time / 60
+        u1 = self.sigmoid(self.wt[0]*self.kg + self.wt[3]*self.time + self.wt[6])
+        u2 = self.sigmoid(self.wt[1]*self.kg + self.wt[4]*self.time + self.wt[7])
+        u3 = self.sigmoid(self.wt[2]*self.kg + self.wt[5]*self.time + self.wt[8])
         y = self.wt[9]*u1 + self.wt[10]*u2 + self.wt[11]*u3 + self.wt[12]
-        print(type(y))
         
         return y
