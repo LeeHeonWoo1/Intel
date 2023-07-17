@@ -2,7 +2,7 @@ import numpy as np
 
 class MyNet:
     """
-    2x3x1 신경망
+    2x3x1 신경망(사용자의 몸무게, 운동 시간을 받아 하루에 감량할 수 있는 몸무게를 예측하는 클래스)
     """
     def __init__(self, alpha, epochs, kg, time_per_min, MET):
         self.alpha = alpha
