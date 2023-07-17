@@ -30,7 +30,7 @@ def start(i):
     model = MyNet(lr, epochs, kg, time, MET)
 
     # 모델 훈련/예측 메소드 실행
-    y = model.fit_and_predict(kg, time)
+    y = model.fit_and_predict()
     print("="*60)
     print("체중 : {}kg, 운동 시간 : {}분, 실제 감량 체중 : [{}]kg".format(kg, time, model.loss_weight(kg, time)))
     print("체중 : {}kg, 운동 시간 : {}분, 예측 감량 체중 : [{}]kg".format(kg, time, np.round(y, 4)[0]))
