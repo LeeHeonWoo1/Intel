@@ -25,9 +25,18 @@ class MyNet:
 
     def fit_and_predict(self): # 수정된 부분 : 사용자 입력값 두 개 입력받기
         # 학습 시작과 동시에 가중치 배열 생성
+        x_1 = int(input("학습 데이터(몸무게1) : "))
+        x_1_1 = int(input("학습 데이터(운동 시간1) : "))
+        x_2 = int(input("학습 데이터(몸무게2) : "))
+        x_2_1 = int(input("학습 데이터(운동 시간2) : "))
+        x_3 = int(input("학습 데이터(몸무게3) : "))
+        x_3_1 = int(input("학습 데이터(운동 시간3) : "))
+        x_4 = int(input("학습 데이터(몸무게4) : "))
+        x_4_1 = int(input("학습 데이터(운동 시간4) : "))
+        
         self.wt = self.get_weights()
-        input_data = np.array([[80, 120], [100, 180], [90, 60], [72, 30]])
-        teaching_data = np.array([[self.loss_weight(80, 120)], [self.loss_weight(100, 180)], [self.loss_weight(90, 60)], [self.loss_weight(72, 30)]])
+        input_data = np.array([[x_1, x_1_1], [x_2, x_2_1], [x_3, x_3_1], [x_4, x_4_1]])
+        teaching_data = np.array([[self.loss_weight(x_1, x_1_1)], [self.loss_weight(x_2, x_2_1)], [self.loss_weight(x_3, x_3_1)], [self.loss_weight(x_4, x_4_1)]])
 
         for n in range(1, self.epochs+1):
             for i in range(len(input_data)):
