@@ -29,7 +29,7 @@ for n in range(1, epochs+1):
         y = wt[9]*u1 + wt[10]*u2 + wt[11]*u3 + wt[12]
         ######## 역방향 계산(오차역전파) ########
         E = 0.5 * (y - t)**2
-        dE_dw_0 = (y-t)*wt[9]* (1-u1)*u1*x1
+        dE_dw_0 = (y-t)*wt[9]*(1-u1)*u1*x1
         dE_dw_1 = (y-t)*wt[10]*(1-u2)*u2*x1
         dE_dw_2 = (y-t)*wt[11]*(1-u3)*u3*x1
         dE_dw_3 = (y-t)*wt[9]* (1-u1)*u1*x2
