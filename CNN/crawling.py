@@ -126,8 +126,7 @@ class GoogleImageCrawler:
                     urllib.request.urlretrieve(img_url, f"{self.path_datasets}/{key}/{idx}_{key}.jpg")
                 except:
                     pass
-            print(f"{key} 이미지 {len(os.listdir(f'{self.path_datasets}/{key}/'))}개 중 \
-                {self.num_of_data - len(os.listdir(f'{self.path_datasets}/{key}/'))}개 자료가 소실되었습니다.")
+            print(f"{len(os.listdir(f'{self.path_datasets}/{key}/'))}개 이미지를 다운받았습니다. ")
                 
     def seperate_files(self):
         """
