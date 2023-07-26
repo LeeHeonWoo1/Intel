@@ -5,7 +5,7 @@
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import os, urllib.request, datetime, chromedriver_autoinstaller, splitfolders
+import os, urllib.request, datetime, chromedriver_autoinstaller, splitfolders, pandas as pd
 from typing import Union
 from tqdm import tqdm
 
@@ -106,6 +106,8 @@ class GoogleImageCrawler:
             src_dict[keyword] = src_list
         
         self.driver.close()
+        with open(f"./{self.path_output_datasets.replace('./', '')}.txt", 'w') as f:
+            f.write(f"{src_dict}")
         return src_dict
     
     def make_directory(self, some_dict):
@@ -170,7 +172,7 @@ if __name__ == "__main__":
         else:
             pass
     
-    my_crawler = GoogleImageCrawler(keywords = keywords, scroll_seconds = 20, path_datasets = "./my_test1", path_output_datasets = "./test_outputs1") # 객체 생성
+    my_crawler = GoogleImageCrawler(keywords = keywords, scroll_seconds = 20, path_datasets = "./flower_classification", path_output_datasets = "./flower_dataset") # 객체 생성
     my_crawler.chrome_driver_download() # 크롬드라이버 다운로드. 최초 실행 이후 주석처리해도 무관
     print("="*80)
     my_crawler.dowload_datasets() # 이미지 다운로드
