@@ -1,14 +1,15 @@
 from keras import layers, models
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau, CSVLogger
 from keras.preprocessing.image import ImageDataGenerator
-import tensorflow as tf
+from glob import glob
+import tensorflow as tf, os
 
 train_dir='D:/Intel/CNN/flower_classification/flower_dataset/train'
 test_dir='D:/Intel/CNN/flower_classification/flower_dataset/test'
 
 # define parameters
 num_epoch=100                             # 훈련 에포크 회수
-batch_size=4                              # 훈련용 이미지의 묶음
+batch_size=5                              # 훈련용 이미지의 묶음
 learning_rate=0.001                       # 학습률, 작을수록 학습 정확도 올라감
 dropout_rate=0.3                          # 30%의 신경망 연결을 의도적으로 끊음. 과적합 방지용
 input_shape=(120, 120, 3)                 # 입력데이터(이미지)의 크기, 원하는 크기를 입력하면 모든 이미지가 resize됨
@@ -41,18 +42,65 @@ validation_generator = test_datagen.flow_from_directory(
     class_mode='categorical'        
 )                              
      
+# build DenseNet with pretrained model
+def get_model(model):
+    kwargs = {'input_shape':(120, 120, 3), 'include_top':False, # Affine계층은 우리가 구성할 예정이기에 포함하지 않는다.
+            'weights':'imagenet', 'pooling':'avg'}
+    
+    pretrained_model = model(**kwargs)
+    pretrained_model.trainable = True # 레이어를 동결 시켜서 훈련중 손실을 최소화 한다.
+    
+    inputs = pretrained_model.input
+    
+    # 완전연결신경망 구축(functional api method)
+    x = tf.keras.layers.Dropout(rate=0.3)(pretrained_model.output)
+    x = tf.keras.layers.Dense(128, activation='relu')(pretrained_model.output)
+    x = tf.keras.layers.Dense(128, activation='relu')(x)
+    x = tf.keras.layers.Dropout(rate=0.3)(x)
+    outputs = tf.keras.layers.Dense(3, activation='softmax')(x)
+    model = tf.keras.Model(inputs=inputs, outputs=outputs)
+
+    model.compile(
+        optimizer='adam',
+        loss='categorical_crossentropy',
+        metrics=['accuracy']
+    )
+    
+    return model
+
+def fit_densenet():
+    weight_path = glob("./CNN/flower_classification/model/weights/*.hdf5")
+    if len(weight_path) != 0:
+        for path in weight_path:
+            os.remove(path)
+    
+    # define callback functions
+    els = EarlyStopping(monitor="val_loss", patience=5, mode="min")
+    mch = ModelCheckpoint(filepath="./CNN/flower_classification/model/weights/weights.{epoch:02d}-{val_loss:.2f}.hdf5", monitor="val_loss", save_best_only=True, mode="min")
+    rdl = ReduceLROnPlateau(monitor="val_loss", factor=0.3, patience=3, mode="min")
+    logger = CSVLogger("./CNN/flower_classification/model/history.csv")
+    
+    model = get_model(tf.keras.applications.DenseNet201)
+    model.fit(train_generator,
+        steps_per_epoch = len(train_generator),
+        epochs = num_epoch,
+        validation_data = validation_generator,
+        validation_steps = len(validation_generator),
+        callbacks=[mch, rdl, els, logger])
+    
+# build CNN in my own
 def create_model():
     model=models.Sequential()                                                        # 모델 객체 생성  
     model.add(layers.Conv2D(32, (3,3), activation='relu', input_shape=input_shape))  # 1차 합성곱 연산 시행
-    model.add(layers.MaxPooling2D((2,2)))                                            # (2, 2)크기로 max pooling 시행, 이 때 stride는 지정하지 않으면 pooling size로 지정된다.
+    # model.add(layers.MaxPooling2D((2,2)))                                            # (2, 2)크기로 max pooling 시행, 이 때 stride는 지정하지 않으면 pooling size로 지정된다.
     model.add(layers.Dropout(dropout_rate))                                          # dropout 층
-    model.add(layers.Conv2D(64, (3,3), activation='relu'))                           # 2차 합성곱 연산 시행
-    model.add(layers.MaxPooling2D((2,2)))                                            # Max Pooling   
+    model.add(layers.Conv2D(32, (3,3), activation='relu'))                           # 2차 합성곱 연산 시행
+    # model.add(layers.MaxPooling2D((2,2)))                                            # Max Pooling   
     model.add(layers.Dropout(dropout_rate))                                          # dropout
     # Affine 계층
     model.add(layers.Flatten())                                                      # 평탄화 작업층. 완전연결 신경망의 입력층 부분이 된다.
-    model.add(layers.Dense(64, activation = 'relu'))                                 # 히든 레이어. 노드의 개수는 64개
-    model.add(layers.Dropout(dropout_rate))                                          
+    model.add(layers.Dense(128, activation = 'relu'))                                 # 히든 레이어. 노드의 개수는 64개
+    # model.add(layers.Dropout(dropout_rate))                                          
     model.add(layers.Dense(num_class, activation = 'softmax'))                       # 출력층의 노드 수는 3개이며, 각 데이터의 확률값으로 출력하기 위한 softmax(확률의 총합 = 1)
     
     return model # 계층을 추가한 모델을 반환한다.
@@ -60,6 +108,10 @@ def create_model():
 def fit_model():
     model = create_model()
     model.compile(optimizer = tf.optimizers.Adam(learning_rate), loss = 'categorical_crossentropy', metrics = ['accuracy'])
+    weight_path = glob("./CNN/flower_classification/model/weights/*.hdf5")
+    if len(weight_path) != 0:
+        for path in weight_path:
+            os.remove(path)
     
     # 콜백함수(https://wikidocs.net/179491)
     # EarlyStopping : 한 epoch가 끝나면 EarlyStopping 이 호출되고 구성한 모델이 지금까지 찾은 최상의 값과 관련하여 개선되었는지 여부를 확인한다. 
@@ -90,6 +142,6 @@ def fit_model():
         validation_steps = len(validation_generator),
         callbacks=[mch, rdl, els, logger]
     )
-    
+
 if __name__ == "__main__":
-    fit_model()
+    fit_densenet()

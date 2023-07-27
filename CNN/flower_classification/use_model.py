@@ -1,5 +1,5 @@
 from glob import glob
-from train_only import create_model
+from train_only import create_model, get_model
 import numpy as np, tensorflow as tf, matplotlib.pyplot as plt, matplotlib as mlp, pandas as pd
 
 def read_image(path):                                    # 이미지를 읽어오기 위한 함수 만듦
@@ -36,19 +36,19 @@ def show_history(history_csv_path):               # history csv 경로를 입력
 
 if __name__ == "__main__":
     # 모델의 구조를 형성하고
-    model = create_model()
+    model = get_model(tf.keras.applications.DenseNet201)
     
     # 컴파일 한 뒤
     model.compile(optimizer = tf.optimizers.Adam(0.001), loss = 'categorical_crossentropy', metrics = ['accuracy'])
     
     # 학습했던 가중치를 적용한다.
-    model.load_weights("./CNN/flower_classification/model/weights/weights.25-0.44.hdf5")
+    model.load_weights("./CNN/flower_classification/model/weights/weights.18-0.28.hdf5")
     
     # 학습 추이 시각화
     show_history("./CNN/flower_classification/model/history.csv")
 
     # 라벨값을 dict로 생성하여 결과 표출 시 사용한다.
-    labels = {0:"cosmos", 1:"sunflower", 2:"tulip"}
+    labels = {0:"민들레꽃", 1:"해바라기", 2:"튤립"}
 
     # 검증파일 경로 지정
     data_path = glob('./CNN/flower_classification/flower_dataset/val/*/*.jpg')
