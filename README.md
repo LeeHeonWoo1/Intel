@@ -56,10 +56,12 @@
 - 강아지 표정 분류(다중분류)
 > 스토리텔링과 함께 강아지의 표정을 4개의 클래스로 분류(분노, 슬픔, 평온, 행복)
 
+단순히 CNN만 사용하기에는 아쉬울 듯 하여, 전이학습과 미세조정, 앙상블 학습을 도전했다.
+
 - Project Flow
     + Kaggle에서 데이터 수집
     + 간단한 전처리
-    + 모델링(Self Building / Use Pretrained Model(Preference learning))
+    + 모델링(Self Building vs Use Pretrained Model(Preference learning))
     + 학습 곡선 가시화 / 예측
     + 해당 프로젝트 파일은 `[/CNN/dog_emotion_classification]`디렉토리에서 확인 가능
 
