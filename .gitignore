@@ -13,4 +13,7 @@ movie_dataset
 movie_dataset_output
 mediapipe
 dog_dataset
+dog_dataset_output
 weights
+mnist_weights.h5
+crawler
