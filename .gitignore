@@ -17,3 +17,4 @@ dog_dataset_output
 weights
 mnist_weights.h5
 crawler
+lstm_sun
