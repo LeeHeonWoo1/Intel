@@ -25,3 +25,6 @@ YOLO
 .cometml-runs
 Reinforce Learning
 TrainingCustomData
+gen_images
+gen_f_images
+training_checkpoints
