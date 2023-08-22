@@ -11,7 +11,7 @@
 #### 1일차 진행 현황
 15건의 데이터 생성, 변수의 경우 날개 길이, 날개 폭, 몸통 길이, 다리 길이의 4가지로 구성, 신경망 구축
 
-<div align = center><img src="./images/dataframe of paper helicopter.png"></div>
+<div align = center><img src="./image/dataframe of paper helicopter.png"></div>
 
 ```python
 input_layer = Input(shape = (4, ))
@@ -30,7 +30,7 @@ model.compile(optimizer = optim, loss = "mean_squared_error")
 
 테스트 데이터가 없기에 훈련 데이터를 그대로 집어넣어 예측을 진행했다.
 
-<div align = center><img src="./images/dataframe for predictions of paper helicopter.png"></div>
+<div align = center><img src="./image/dataframe for predictions of paper helicopter.png"></div>
 
 #### 2일차 목표
 - scikit learn으로 모델링, 내부 프로세싱 명확하게 이해하기
