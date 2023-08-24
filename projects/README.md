@@ -34,3 +34,14 @@ model.compile(optimizer = optim, loss = "mean_squared_error")
 
 #### 2일차 목표
 - scikit learn으로 모델링, 내부 프로세싱 명확하게 이해하기
+
+#### 2일차 진행 현황
+48건의 데이터 생성, 측정 기준 변경
+- 3번의 측정 이후 평균값으로 체공시간 산출
+
+Scikit-learn 모델로도 예측 진행
+- SVM의 Regression 계열 모델 사용, GridSearchCV로 하이퍼 파라미터 튜닝
+- shap Value를 활용한 변수 중요도 확인
+
+#### 3일차 목표
+- shap Value 명확하게 이해하기
