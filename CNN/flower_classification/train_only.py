@@ -48,7 +48,7 @@ def get_model(model):
             'weights':'imagenet', 'pooling':'avg'}
     
     pretrained_model = model(**kwargs)
-    pretrained_model.trainable = True # 레이어를 동결 시켜서 훈련중 손실을 최소화 한다.
+    pretrained_model.trainable = False # 레이어를 동결 시켜서 훈련중 손실을 최소화 한다.
     
     inputs = pretrained_model.input
     
