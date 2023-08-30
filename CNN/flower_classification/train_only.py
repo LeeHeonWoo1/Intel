@@ -1,8 +1,9 @@
 from keras import layers, models
-from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau, CSVLogger
+from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau, CSVLogger, TensorBoard
 from keras.preprocessing.image import ImageDataGenerator
 from glob import glob
 import tensorflow as tf, os
+import datetime
 
 train_dir='D:/Intel/CNN/flower_classification/flower_dataset/train'
 test_dir='D:/Intel/CNN/flower_classification/flower_dataset/test'
@@ -54,7 +55,7 @@ def get_model(model):
     
     # 완전연결신경망 구축(functional api method)
     x = tf.keras.layers.Dropout(rate=0.3)(pretrained_model.output)
-    x = tf.keras.layers.Dense(128, activation='relu')(pretrained_model.output)
+    x = tf.keras.layers.Dense(128, activation='relu')(x)
     x = tf.keras.layers.Dense(128, activation='relu')(x)
     x = tf.keras.layers.Dropout(rate=0.3)(x)
     outputs = tf.keras.layers.Dense(3, activation='softmax')(x)
@@ -74,11 +75,15 @@ def fit_densenet():
         for path in weight_path:
             os.remove(path)
     
+    # log directory 설정
+    log_dir = "logs\\fit\\" + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    
     # define callback functions
     els = EarlyStopping(monitor="val_loss", patience=5, mode="min")
     mch = ModelCheckpoint(filepath="./CNN/flower_classification/model/weights/weights.{epoch:02d}-{val_loss:.2f}.hdf5", monitor="val_loss", save_best_only=True, mode="min")
     rdl = ReduceLROnPlateau(monitor="val_loss", factor=0.3, patience=3, mode="min")
     logger = CSVLogger("./CNN/flower_classification/model/history.csv")
+    t_board = TensorBoard(log_dir = log_dir, histogram_freq = 1)
     
     model = get_model(tf.keras.applications.DenseNet201)
     model.fit(train_generator,
@@ -86,7 +91,7 @@ def fit_densenet():
         epochs = num_epoch,
         validation_data = validation_generator,
         validation_steps = len(validation_generator),
-        callbacks=[mch, rdl, els, logger])
+        callbacks=[mch, rdl, els, logger, t_board])
     
 # build CNN in my own
 def create_model():
