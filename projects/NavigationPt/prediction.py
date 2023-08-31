@@ -42,7 +42,6 @@ input_shape = (50, 50, 3)
 class_list = {0 : 'lego', 1 : 'airpods', 2 : 'charger'}
 while True:               # q키 입력으로 영상 종료
     frame = cam.read()    # 웹캠 영상을 읽어와 실시간으로 뿌림. ret, frame = capture.read() 에 해당  
-    cv2.imshow('Original Video', frame)
     key = cv2.waitKey(1)
     if key == ord('q'):
         break
@@ -56,7 +55,10 @@ while True:               # q키 입력으로 영상 종료
         testImage = image[tf.newaxis, ...]
         pred = model.predict(testImage, verbose = 0)
         num = np.argmax(pred)
-        print(class_list[num])
+        result = class_list[num]
+        
+        img = cv2.putText(frame, result, (350, 40), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 1, cv2.LINE_AA)
+        cv2.imshow("RESULTS", img)
         # if num == 2:
         #     playsound.playsound(r"D:\Intel\projects\NavigationPt\mp3_files\warning.mp3")
         # elif num == 0 or num == 1:
