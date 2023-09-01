@@ -3,7 +3,7 @@ import os
 import datetime 
 from imutils.video import WebcamVideoStream
 
-host = "{}:4747/video".format("http://192.168.137.213") # 유동 IP주소이므로 매번 바뀔 수 있음
+host = "{}:4747/video".format("http://192.168.0.39")
 cam = WebcamVideoStream(src=host).start()    # 비디오 스트림 시작. capture = cv2.VideoCapture(0) 부분에 해당 
 
 while True:    # q키 입력으로 영상 종료
