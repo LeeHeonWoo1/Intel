@@ -5,7 +5,7 @@ train_data_path = r"D:\Intel\projects\NavigationPt\image"
 
 train_generator = ImageDataGenerator(
     rescale = 1./255.,
-    validation_split = 0.1,
+    validation_split = 0.2,
     horizontal_flip = True,
     width_shift_range = 0.1,
     height_shift_range = 0.1
@@ -54,11 +54,11 @@ model = get_model()
 model.fit(train_data, 
           steps_per_epoch = len(train_data),
           epochs = 100,
-          callbacks = [callbacks.ModelCheckpoint("./projects/NavigationPt/models/weights/add_data&ag_els_{epoch:02d}-{val_loss:.2f}.hdf5",
+          callbacks = [callbacks.ModelCheckpoint("./projects/NavigationPt/models/weights/val_spilit_0.2_{epoch:02d}-{val_loss:.2f}.hdf5",
                                                  monitor = "val_loss",
                                                  save_best_only = True,
                                                  mode = "min"),
                        callbacks.EarlyStopping(monitor = "val_loss", mode = "min", patience = 7)],
           validation_data = valid_data,
           validation_steps = len(valid_data)
-          )
+        )
