@@ -4,6 +4,8 @@ from keras import models, layers, optimizers
 import winsound
 import tensorflow as tf
 import numpy as np
+import playsound
+from keras.models import load_model
 
 def read_image(path):
     gfile = tf.io.read_file(path)
@@ -32,9 +34,9 @@ def get_model():
     return model
 
 model = get_model()
-model.load_weights(r"D:\Intel\projects\NavigationPt\models\weights\add_data&ag_els_10-0.03.hdf5")
+model.load_weights(r"D:\Intel\projects\NavigationPt\models\weights\add_lego_data_11-0.05.hdf5")
 
-host = "{}:4747/video".format("http://192.168.137.213")
+host = "{}:4747/video".format("http://192.168.0.39")
 cam = WebcamVideoStream(src=host).start() 
 
 test_path = r"D:\Intel\projects\NavigationPt\test_image"
@@ -59,9 +61,9 @@ while True:               # q키 입력으로 영상 종료
         
         img = cv2.putText(frame, result, (350, 40), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 1, cv2.LINE_AA)
         cv2.imshow("RESULTS", img)
-        # if num == 2:
-        #     playsound.playsound(r"D:\Intel\projects\NavigationPt\mp3_files\warning.mp3")
-        # elif num == 0 or num == 1:
-        #     winsound.Beep(200, 700)
+        if num == 2:
+            playsound.playsound(r"D:\Intel\projects\NavigationPt\mp3_files\warning.mp3")
+        elif num == 0 or num == 1:
+            winsound.Beep(200, 700)
 
 cv2.destroyAllWindows()
