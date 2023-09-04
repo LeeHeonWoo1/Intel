@@ -71,7 +71,7 @@ while True:
             cv2.FONT_HERSHEY_PLAIN, 
             2,                      # Font size
             (255, 0, 0),            # Font color
-            1,                      # thick of font
+            1,                      # thickness of font
             cv2.LINE_AA,           
         )
         cv2.imshow("RESULTS", img)
