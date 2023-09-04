@@ -9,7 +9,7 @@ from sklearn.metrics import mean_squared_error
 
 mlp.rcParams["font.family"] = "Malgun Gothic"
 
-df = pandas.read_csv('./RNN/DEXKOUS.csv', usecols=[1], thousands=",", skipfooter = 3, engine = "python").sort_index(ascending=False) # 종가 데이터만 가지고와서 작업
+df = pandas.read_csv(r'D:\Intel\RNN\data\DEXKOUS.csv', usecols=[1], thousands=",", skipfooter = 3, engine = "python").sort_index(ascending=False) # 종가 데이터만 가지고와서 작업
 dataset = df.values # ndarray 타입으로 변환
 np.random.seed(7)
 scaler = MinMaxScaler(feature_range=(0, 1)) # 정규화 객체 생성
