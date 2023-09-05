@@ -130,7 +130,16 @@ GAN간단 이론
 ### 7주차(주차벌 미니 프로젝트 시작)
 첫 번째 미니프로젝트 : 종이 헬리콥터 회귀분석
 
+코드는 `projects/paper Helicopter` 에서 확인할 수 있다.
+
 <hr>
 
 ### 8주차
 두 번째, 세 번째 미니 프로젝트 : CNN활용 프로젝트
+
+코드는 `projects/CompletionSignal` 과 `projects/NavigationPt` 에서 확인할 수 있다.
+
+<hr>
+
+### 9주차
+YoloV5기반 Custom data로 진행하는 미니 프로젝트를 진행한다.
