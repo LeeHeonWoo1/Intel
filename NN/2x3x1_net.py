@@ -7,7 +7,7 @@ epochs = 1000
 
 wt = []
 for i in range(13):
-    w = np.random.rand()
+    w = np.random.rand() 
     wt.append(w)
     
 def sigmoid(x):
