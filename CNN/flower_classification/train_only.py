@@ -45,10 +45,14 @@ validation_generator = test_datagen.flow_from_directory(
      
 # build DenseNet with pretrained model
 def get_model(model):
-    kwargs = {'input_shape':(120, 120, 3), 'include_top':False, # Affine계층은 우리가 구성할 예정이기에 포함하지 않는다.
-            'weights':'imagenet', 'pooling':'avg'}
+    any = {
+        'input_shape':(120, 120, 3), 
+        'include_top':False, # Affine계층은 우리가 구성할 예정이기에 포함하지 않는다.
+        'weights':'imagenet', 
+        'pooling':'avg'
+    }
     
-    pretrained_model = model(**kwargs)
+    pretrained_model = model(**any)
     pretrained_model.trainable = False # 레이어를 동결 시켜서 훈련중 손실을 최소화 한다.
     
     inputs = pretrained_model.input
