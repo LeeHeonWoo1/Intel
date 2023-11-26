@@ -10,6 +10,7 @@ import csv
 import pandas as pd
 from bs4 import BeautifulSoup as bs
 from selenium.webdriver.common.by import By
+from sklearn.preprocessing import StandardScaler
 
 
 class ConcatDataFrame:
@@ -23,13 +24,14 @@ class ConcatDataFrame:
     new_df : 새로 병합할 데이터프레임입니다.
     """
 
-    def __init__(self, df: Union[pd.DataFrame, None], new_df: Union[pd.DataFrame, None] = None, crawl_cafe_url: Union[None, str, list] = None,
-        crawl_club_id: Union[None, int, list] = None, save_csv_path: Union[None, str] = None):
+    def __init__(self, df: Union[pd.DataFrame, None] = None, new_df: Union[pd.DataFrame, None] = None, crawl_cafe_url: Union[None, str, list] = None,
+        crawl_club_id: Union[None, int, list] = None, save_csv_path: Union[None, str] = None, article_id: Union[None, int, list] = None):
         self.df = df
         self.new_df = new_df
         self.crawl_cafe_url = crawl_cafe_url
         self.crawl_club_id = crawl_club_id
         self.save_csv_path = save_csv_path
+        self.article_id = article_id
 
     def pretreate(self, df: Union[pd.DataFrame, None]):
         """
@@ -76,13 +78,24 @@ class ConcatDataFrame:
 
             else:
                 work_df["views"] = work_df["views"].astype(int)
+                
+        origin_title_list = work_df['title'].values
+        new_title_list = []
+        for title in origin_title_list:
+            if '[' in title and ']' in title:
+                new_title = title.replace(title[ title.find('[') : title.find(']') + 1 ], "")
+                new_title_list.append(new_title)
+            else:
+                new_title_list.append(title)
+
+        work_df['title'] = new_title_list
 
         try:
             work_df["title"] = work_df["title"].str.replace("[^ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-zA-Z ]", "", regex=True)
-        
+
         except:
             work_df["title"] = work_df["title"].replace("[^ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-zA-Z ]", "", regex=True)
-        
+
         dup_cnt = work_df["title"].loc[work_df["title"].duplicated() == True].count()
 
         if dup_cnt > 0:
@@ -92,6 +105,7 @@ class ConcatDataFrame:
         work_df.dropna(axis = 0, inplace=True)
 
         print("전처리 완료")
+        work_df.to_csv("./new_work_df.csv", sep = ",", index = False, encoding = "utf8")
 
         return work_df
 
@@ -106,85 +120,62 @@ class ConcatDataFrame:
 
         idx = 0
 
+        all_data = []
         for _ in range(0, 1000):
+            row_data = []
             baseurl = self.crawl_cafe_url
             clubid = self.crawl_club_id
-            for i in range(len(baseurl)):
-                browser.get(baseurl[i])
+            articleid = self.article_id
+            # for i in range(len(baseurl)):
+            browser.get(baseurl)
 
-                idx = idx + 1
+            idx += 1
 
-                boardtype = "L"
-                pageNum = idx
-                userDisplay = 50
+            boardtype = "L"
+            pageNum = idx
+            userDisplay = 50
 
-                time.sleep(3)
+            time.sleep(3)
 
-                browser.get(
-                    baseurl[i]
-                    + "ArticleList.nhn?search.clubid="
-                    + str(clubid[i])
-                    + "&search.boardtype="
-                    + str(boardtype)
-                    + "&search.page="
-                    + str(pageNum)
-                    + "&userDisplay="
-                    + str(userDisplay)
-                )
-                browser.switch_to.frame("cafe_main")
+            browser.get(baseurl + "ArticleList.nhn?search.clubid=" + str(clubid) + "&search.boardtype=" + str(boardtype)
+                + "&search.page=" + str(pageNum) + "&userDisplay=" + str(userDisplay) + "&articleid=" + str(articleid)
+            )
+            
+            articleid -= 1
 
-                soup = bs(browser.page_source, "html.parser")
-                soup = soup.find_all(class_="article-board m-tcol-c")[1]
+            soup = bs(browser.page_source, "html.parser")
+            data = soup.find_all(class_="ArticleContentBox")
+            
+            article_title = data.find(class_="title_text")
+            article_content = data.find(class_="se-module.se-module-text")
+            article_view = data.select_one("#app > div > div > div.ArticleContentBox > div.article_header > div.WriterInfo > div.profile_area > div.article_info > span.count")
 
-                datas = soup.select(
-                    "#main-area > div:nth-child(4) > table > tbody > tr"
-                )
+            article_contents = article_content.find_all("p")
+            main_context = ''
+            for content in article_contents:
+                main_context += content.text
+            
+            row_data.append(main_context)
+            row_data.append(article_title.text)
+            row_data.append(article_view.text)
+            all_data.append(row_data)
 
-                for data in datas:
-                    article_title = data.find(class_="article")
-                    article_date = data.find(class_="td_date")
-                    article_view = data.find(class_="td_view")
-
-                    if article_title == None:
-                        article_title = "null"
-                    else:
-                        article_title = (
-                            article_title.get_text().replace("\n", "").replace("  ", "")
-                        )
-
-                    if article_date == None:
-                        article_date = "null"
-                    else:
-                        article_date = (
-                            article_date.get_text().replace("\n", "").replace("  ", "")
-                        )
-
-                    if article_view == None:
-                        article_view = "null"
-                    else:
-                        article_view = (
-                            article_view.get_text().replace("\n", "").replace("  ", "")
-                        )
-
-                    f = open(self.save_csv_path, "a+", newline="", encoding="utf-8")
-                    wr = csv.writer(f)
-                    wr.writerow([article_title, article_date, article_view])
-                    f.close()
+        df = pd.DataFrame(all_data, columns=['content', 'title', 'views'])
+        df.to_csv("./get_title_content.csv", sep = ",", index=False, encoding="utf8")
+        print("크롤링 완료")
 
     def labeling(self, df):
         """
         라벨값 간 분포가 균등한 값을 찾아 라벨링을 진행합니다. 이 때 사용하는 기준값은 평균, 제1사분위수, 제2사분위수입니다.
         """
 
-        work_df = self.pretreate(df)
-        work_df.dropna(axis = 0, inplace = True, )
-        mean_val = int(work_df["views"].mean())
+        # work_df = self.pretreate(df)
+        work_df = df
+        mean_val = work_df['views'].mean()
+        
         work_df["label"] = self.get_label_list(work_df["views"].values, mean_val)
 
-        if (
-            abs(work_df["label"].value_counts()[0] - work_df["label"].value_counts()[1])
-            >= 250
-        ):
+        if (abs(work_df["label"].value_counts()[0] - work_df["label"].value_counts()[1]) >= 250):
             quantile_values = [
                 work_df["views"].quantile(0.25),
                 work_df["views"].quantile(0.5),
@@ -192,15 +183,36 @@ class ConcatDataFrame:
 
             for value in quantile_values:
                 work_df["label"] = self.get_label_list(work_df["views"].values, value)
-                if (
-                    abs(
-                        work_df["label"].value_counts()[0]
-                        - work_df["label"].value_counts()[1]
-                    )
-                    < 250
-                ):
+                if (abs(work_df["label"].value_counts()[0] - work_df["label"].value_counts()[1]) < 250):
                     break
                 
+        work_df.to_csv("./test.csv", encoding="utf8", sep=",", index=False)
+        # work_df = self.pretreate(df)
+        # work_df = df
+        # work_df['views'] = work_df['views'].astype('string')
+        # df_value = work_df['views'].apply(lambda x : x.replace(",", "").replace("만", "")).values
+        
+        # df_value = df_value.reshape(-1, 1)
+        # scaler = StandardScaler()
+        # scaler.fit(df_value)
+        
+        # work_df['views'] = list(scaler.transform(df_value).reshape(-1))
+        
+        # label_list = []
+        # for value in work_df['views'].values:
+        #     if value >= 0.75:
+        #         label_list.append(0)
+        #     elif value >= 0.5:
+        #         label_list.append(1)
+        #     elif value >= 0.25:
+        #         label_list.append(2)
+        #     else:
+        #         label_list.append(3)
+        
+        # work_df['label'] = label_list
+        
+        # work_df.to_csv("./test.csv", encoding="utf8", sep=",", index=False)
+        
         return work_df
 
     def get_label_list(self, values, standard):
