@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Serif+KR:wght@300&family=Gothic+A1:wght@300&display=swap" rel="stylesheet">
+</head>
+  
+{%load static%}
+<link rel="stylesheet" type="text/css" href="{% static 'main_css.css' %}">
+<body>
+    <nav class="navbar">
+      <div class="navbar__logo">
+          <i class="fab fa-accusoft"></i>
+          <a href="{% url 'home' %}" style="margin-left: 10px;">Home</a>
+      </div>
+
+      <ul class="navbar__menu">
+          <li><a href="{% url 'render_prediction' %}">Prediction</a></li>
+          <li><a href="">Generate</a></li>
+          <li><a href="{% url 'render_text_summarization' %}">Summarization</a></li>
+          <li><a href="">OCR</a></li>
+          <li><a href="">FAQ</a></li>
+      </ul>
+
+      <ul class="navbar__icons">
+          <li><i class="fab fa-twitter"></i></li>
+          <li><i class="fab fa-facebook-f"></i></li>
+      </ul>
+
+      <a href="#" class="navbar__toogleBtn">
+          <i class="fas fa-bars"></i>
+      </a>
+    </nav>
+
+    <div class="header">
+      <h1 style="font-family: 'BlackHanSans-Regular'">인생 제목</h1>
+      <p>세상을 놀래킬 <b>당신만의 제목</b>을 만들어봐요.</p>
+    </div>
+    
+    <div class="row">
+      <div class="side">
+        <h3 style="font-family: 'Gothic A1', sans-serif;">이번주에 가장 핫했던 컨텐츠</h3>
+        <div class="hot_article_img" style="height:150px;"><img src="/static/images/popular.jpg"></div>
+        <h4 style="font-family: 'BlackHanSans-Regular'">go to see in youtube!</h4>
+        <p>경쟁력 있는 개발자로 성장하기 !</p><br>
+        <h3 style="font-family: 'BlackHanSans-Regular'">서비스 중인 항목들</h3>
+        <div class="fakeimg1" style="height:60px;">1. 게시글 제목으로 인기도 예측</div><br>
+        <div class="fakeimg1" style="height:60px;">2. 게시글 제목 생성하기</div><br>
+        <div class="fakeimg1" style="height:60px;">3. 게시글 내용 요약해보기</div><br>
+        <div class="fakeimg1" style="height:60px;">4. OCR(Beta Version)</div>
+      </div>
+      <div class="main">
+        <h2>😊</h2>
+        <h4>우리는 이런 서비스를 하고 있어요 !</h4>
+        <div class="fakeimg" style="height:428px;" ><img src="/static/images/main_image.jpg"></div>
+        <br>
+        <p>주기적으로 업데이트 되는 자료들을 기반으로 학습된 AI로 인기로 이끄는 게시글 제목을 제공하는 서비스를 하고 있어요 ! 여러분이 주시는 소중한 정보들과 함께 학습되고 있습니다. 여러분이 어떻게 보면 AI를 학습시키고 계신거에요 !
+          이용하면서 불편하신 점들은 하단에 위치한 email로 보내주시면 바로 반영하겠습니다 😊
+        </p>
+        <br>
+        <h2 style="font-family: 'Gothic A1', sans-serif;">주요 기능</h2>
+        <div class="fakeimg" style="height:400px;"><img src="/static/images/main_image22.png"></div>
+        <p>수많은 텍스트 데이터를 기반으로 학습된 AI는 여러분에게 새로운 게시글 제목을 제공합니다. 또한 말뭉치를 핵심 내용으로 요약하는 작업은 여러 부분에서 유용하게 사용할 수 있습니다.
+          뉴스 기사 제목을 짓거나, 논문의 제목으로도 ! 다양한 방면으로 자유롭게 이용해보세요 😊</p>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <footer class="footer-distributed">
+        <div class="footer-left">
+          <h3>Best Title in <span>Your Life</span></h3>
+          <p class="footer-links">
+            <a href="#" class="link-1">Home</a>
+            
+            <a href="#">Blog</a>
+          
+            <a href="#">Pricing</a>
+          
+            <a href="#">About</a>
+            
+            <a href="#">Faq</a>
+            
+            <a href="#">Contact</a>
+          </p>
+          <p class="footer-company-name">Company Name © 2023</p>
+        </div>
+        <div class="footer-center">
+          <div>
+            <i class="fa fa-map-marker"></i>
+            <p><span>부산광역시 금정구</span>중앙대로 1841번길 39 </p>
+          </div>
+  
+          <div>
+            <i class="fa fa-phone"></i>
+            <p>+10-1234-5667</p>
+          </div>
+  
+          <div>
+            <i class="fa fa-envelope"></i>
+            <p><a href="mailto:support@company.com">support@company.com</a></p>
+          </div>
+  
+        </div>
+      </footer>
+    </div>
+    </body> 
+</html>

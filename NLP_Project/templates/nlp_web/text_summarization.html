@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Serif+KR:wght@300&family=Gothic+A1:wght@300&display=swap" rel="stylesheet">
+</head>
+
+{%load static%}
+<link rel="stylesheet" type="text/css" href="{% static 'prediction.css' %}">
+<body>
+    <nav class="navbar">
+        <div class="navbar__logo">
+            <i class="fab fa-accusoft"></i>
+            <a href="{% url 'home' %}" style="margin-left: 10px;">Home</a>
+        </div>
+  
+        <ul class="navbar__menu">
+            <li><a href="{% url 'render_prediction' %}">Prediction</a></li>
+            <li><a href="">Generate</a></li>
+            <li><a href="{% url 'render_text_summarization' %}">Summarization</a></li>
+            <li><a href="">OCR</a></li>
+            <li><a href="">FAQ</a></li>
+        </ul>
+  
+        <ul class="navbar__icons">
+            <li><i class="fab fa-twitter"></i></li>
+            <li><i class="fab fa-facebook-f"></i></li>
+        </ul>
+  
+        <a href="#" class="navbar__toogleBtn">
+            <i class="fas fa-bars"></i>
+        </a>
+    </nav>
+    <!-- Header -->
+    <div class="header">
+        <h1 style="font-family: 'BlackHanSans-Regular'">인생 제목</h1>
+        <p>세상을 놀래킬 <b>당신만의 제목</b>을 만들어봐요.</p>
+    </div>
+    
+    <div class="row">
+        <div class="side">
+            <h3 style="font-family: 'Gothic A1', sans-serif;">이번주에 가장 핫했던 컨텐츠</h3> <!--{% static 'image/popular.jpg' %}-->
+            <div class="hot_article_img" style="height:150px;"><img src="/static/images/popular.jpg"></div>
+            <h4 style="font-family: 'BlackHanSans-Regular'">go to see in youtube!</h4>
+            <p>경쟁력 있는 개발자로 성장하기 !</p><br>
+            <!-- <h3>새로운 제목을 생성해보세요 !</h3> -->
+            <h3 style="font-family: 'BlackHanSans-Regular'">서비스 중인 항목들</h3>
+            <div class="fakeimg1" style="height:60px;">1. 게시글 제목으로 인기도 예측</div><br>
+            <div class="fakeimg1" style="height:60px;">2. 게시글 제목 생성하기</div><br>
+            <div class="fakeimg1" style="height:60px;">3. 게시글 내용 요약해보기</div><br>
+            <div class="fakeimg1" style="height:60px;">4. OCR(Beta Version)</div>
+        </div>
+        <div class="main">
+            <h2 style="font-family: 'Gothic A1', sans-serif;">본문 내용 요약 서비스</h2>
+            <h4>작성하신 본문의 내용을 요약해드릴게요. 제목 작성에 참고하시는건 어때요? 🤗</h4>
+            <div class="card">
+                <h1 style="font-family: 'Gothic A1', sans-serif;">본문 내용 요약하기 ✌️</h1>
+                <form method="post" action="{% url 'text_summarization' %}">
+                {% csrf_token %}
+                    <div class="form__group field">
+                        <textarea cols="180" rows="20" name="text_content" id="text_content" required></textarea>
+                        <div class="button-group">
+                            <button type="submit">Summarize</button>
+                            <button type="reset">Reset</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
