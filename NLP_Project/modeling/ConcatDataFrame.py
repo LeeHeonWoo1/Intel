@@ -185,33 +185,6 @@ class ConcatDataFrame:
                 work_df["label"] = self.get_label_list(work_df["views"].values, value)
                 if (abs(work_df["label"].value_counts()[0] - work_df["label"].value_counts()[1]) < 250):
                     break
-                
-        work_df.to_csv("./test.csv", encoding="utf8", sep=",", index=False)
-        # work_df = self.pretreate(df)
-        # work_df = df
-        # work_df['views'] = work_df['views'].astype('string')
-        # df_value = work_df['views'].apply(lambda x : x.replace(",", "").replace("만", "")).values
-        
-        # df_value = df_value.reshape(-1, 1)
-        # scaler = StandardScaler()
-        # scaler.fit(df_value)
-        
-        # work_df['views'] = list(scaler.transform(df_value).reshape(-1))
-        
-        # label_list = []
-        # for value in work_df['views'].values:
-        #     if value >= 0.75:
-        #         label_list.append(0)
-        #     elif value >= 0.5:
-        #         label_list.append(1)
-        #     elif value >= 0.25:
-        #         label_list.append(2)
-        #     else:
-        #         label_list.append(3)
-        
-        # work_df['label'] = label_list
-        
-        # work_df.to_csv("./test.csv", encoding="utf8", sep=",", index=False)
         
         return work_df
 
@@ -236,10 +209,7 @@ class ConcatDataFrame:
         mean_val = int(new_df["views"].mean())
         new_df["label"] = self.get_label_list(new_df["views"].values, mean_val)
 
-        if (
-            abs(new_df["label"].value_counts()[0] - new_df["label"].value_counts()[1])
-            >= 250
-        ):
+        if (abs(new_df["label"].value_counts()[0] - new_df["label"].value_counts()[1]) >= 250):
             quantile_values = [
                 new_df["views"].quantile(0.25),
                 new_df["views"].quantile(0.5),
@@ -247,14 +217,9 @@ class ConcatDataFrame:
 
             for value in quantile_values:
                 new_df["label"] = self.get_label_list(new_df["views"].values, value)
-                if (
-                    abs(
-                        new_df["label"].value_counts()[0]
-                        - new_df["label"].value_counts()[1]
-                    )
-                    < 250
-                ):
+                if (abs(new_df["label"].value_counts()[0] - new_df["label"].value_counts()[1]) < 250):
                     break
+                
         new_df.drop_duplicates(subset=["title"], inplace=True, keep='first')
         new_df.to_csv("./new_df.csv", sep=",", encoding="utf8", index=False)
         
