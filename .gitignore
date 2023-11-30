@@ -43,3 +43,7 @@ BubbleData
 chromedriver.exe
 nlp
 NLP_Project/nlp_project
+my_secret_key.py
+.env
+db.sqlite3
+chest_xray
