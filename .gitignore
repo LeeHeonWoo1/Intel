@@ -47,3 +47,6 @@ my_secret_key.py
 .env
 db.sqlite3
 chest_xray
+image data
+fruit_dataset
+apple_dataset
