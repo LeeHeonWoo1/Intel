@@ -11,44 +11,34 @@
         <h2>Sign Up</h2>
             <p>
                 <label for="username" class="floatLabel">이름</label>
-                <input id="username" name="username" type="text" required>
+                <input id="username" name="username" type="text" autocomplete="on" required>
             </p>    
             <p>
                 <label for="userid" class="floatLabel">ID</label>
-                <input id="userid" name="userid" type="text" required>
+                <input id="userid" name="userid" type="text" autocomplete="on" required>
             </p>
             <p>
                 <label for="password" class="floatLabel">Password</label>
-                <input id="password" name="password" type="password" required>
+                <input id="password" name="password" type="password"autocomplete="on" required>
             </p>
             <p>
                 <label for="confirm_password" class="floatLabel">Confirm Password</label>
-                <input id="confirm_password" name="confirm_password" type="password" required>
+                <input id="confirm_password" name="confirm_password" type="password" autocomplete="on" required>
             </p>
             <p>
                 <label for="user_phone" class="floatLabel">휴대폰 번호</label>
-                <input id="user_phone" name="user_phone" type="text" required>
+                <input id="user_phone" name="user_phone" type="text" autocomplete="on" required>
             </p>
             <p>
                 <input type="submit" value="회원가입" id="submit">
+                {%with messages = get_flashed_messages()%}
+                {%if messages %}
+                    <script type="text/javascript">
+                        alert("{{messages[-1]}}");
+                    </script>
+                    {%endif%}
+                {%endwith%}
             </p>
       </form>
 </body>
 </html>
-<script>
-    const submitBtn = document.getElementById("submit")
-    submitBtn.addEventListener("click", ()=>{
-        var password = document.getElementById("password")
-        var passwrod2 = document.getElementById("confirm_password")
-
-        if(password.innerText.length() < 8){
-            window.alert("비밀번호는 8글자 이상이어야 합니다.");
-            return false;
-        }else if(password.innerText !== password2.innerText){
-            window.alert("두 비밀번호가 일치하지 않습니다.");
-            return false;
-        }
-
-        return true;
-    })
-</script>   
