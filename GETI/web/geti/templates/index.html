@@ -1,0 +1,414 @@
+<!doctype html>
+<html class="no-js" lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+        <title>질병 분류 프로그램</title>
+		<link rel="shortcut icon" type="image/icon" href="assets/logo/favicon.png"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/awesome.min.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/linearicons.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/flaticon.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/slick.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/slick-theme.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/bootsnav.css') }}" >	
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+		<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Serif+KR:wght@300&family=Gothic+A1:wght@300&display=swap" rel="stylesheet">
+    </head>
+	
+	<body>
+		<section class="top-area">
+			<div class="header-area">
+			    <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy"  data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
+			        <div class="container">
+			            <div class="navbar-header">
+			                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+			                    <i class="fa fa-bars"></i>
+			                </button>
+			                <a class="navbar-brand" href="/">On<span>Prediction</span></a>
+			            </div>
+
+			            <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+			                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+			                    <li class=" scroll active"><a href="#home">home</a></li>
+			                    <li class="scroll"><a href="#works">about us</a></li>
+			                    <li class="scroll"><a href="#blog">board</a></li>
+			                    <li class="scroll"><a href="#contact">contact</a></li>
+			                    {% if userid %}
+									<li class="scroll"><a href="/move_to_login">{{userid}}님, 환영합니다</a></li>
+								{% else %}
+									<li class="scroll"><a href="/move_to_login">로그인</a></li>
+									<li class="scroll"><a href="/sign_up">회원가입</a></li>
+								{% endif %}
+								<li class="head-responsive-right pull-right"></li>
+			                </ul>
+			            </div>
+			        </div>
+			    </nav>
+			</div>
+		    <div class="clearfix"></div>
+		</section>
+
+		<section id="home" class="welcome-hero" style="background-image:url({{url_for('static', filename='smart_farm.jpg')}})">
+			<div class="container">
+				<!-- <img src="{{ url_for('static', filename='smart_farm.jpg') }}"> -->
+				<div class="welcome-hero-txt">
+					<h2 style="font-family: 'BlackHanSans-Regular'">우리 모두가 함께 상생하는 <br> 우리만의 커뮤니티 😊</h2>
+					<p>
+						이미지만 업로드 하시고, 나에게 꼭 맞는 솔루션을 바로 획득해 보세요 !
+					</p>
+				</div>
+				<div class="container" style="margin-top: 150px;">
+					<div class="list-topics-content">
+						<ul>
+							<li>
+								<div class="single-list-topics-content">
+									<div class="single-list-topics-icon">
+										<i><h1>1</h1></i>
+									</div>
+									<h2><a href="#">Login</a></h2>
+									<p>로그인을 먼저 진행해주세요</p>
+								</div>
+							</li>
+							<li>
+								<div class="single-list-topics-content">
+									<div class="single-list-topics-icon">
+										<i><h1>2</h1></i>
+									</div>
+									<h2 style="font-family: 'BlackHanSans-Regular'"><a href="#">예측 페이지</a></h2>
+									<p>예측 페이지로 이동합니다.</p>
+								</div>
+							</li>
+							<li>
+								<div class="single-list-topics-content">
+									<div class="single-list-topics-icon">
+										<i><h1>3</h1></i>
+									</div>
+									<h2 style="font-family: 'BlackHanSans-Regular'"><a href="#">이미지 업로드</a></h2>
+									<p>사진을 업로드하세요.</p>
+								</div>
+							</li>
+							<li>
+								<div class="single-list-topics-content">
+									<div class="single-list-topics-icon">
+										<i><h1>4</h1></i>
+									</div>
+									<h2 style="font-family: 'BlackHanSans-Regular'"><a href="#">결과 확인</a></h2>
+									<p>결과와 솔루션을 확인하세요.</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+		</section><!--/.welcome-hero-->
+		<!--welcome-hero end -->
+
+		<!-- list-topics start -->
+		<!-- <section id="list-topics" class="list-topics">
+			<div class="container">
+				<div class="list-topics-content">
+					<ul>
+						<li>
+							<div class="single-list-topics-content">
+								<div class="single-list-topics-icon">
+									<i class="flaticon-restaurant"></i>
+								</div>
+								<h2><a href="#">resturent</a></h2>
+								<p>150 listings</p>
+							</div>
+						</li>
+						<li>
+							<div class="single-list-topics-content">
+								<div class="single-list-topics-icon">
+									<i class="flaticon-travel"></i>
+								</div>
+								<h2><a href="#">destination</a></h2>
+								<p>214 listings</p>
+							</div>
+						</li>
+						<li>
+							<div class="single-list-topics-content">
+								<div class="single-list-topics-icon">
+									<i class="flaticon-building"></i>
+								</div>
+								<h2><a href="#">hotels</a></h2>
+								<p>185 listings</p>
+							</div>
+						</li>
+						<li>
+							<div class="single-list-topics-content">
+								<div class="single-list-topics-icon">
+									<i class="flaticon-pills"></i>
+								</div>
+								<h2><a href="#">healthcaree</a></h2>
+								<p>200 listings</p>
+							</div>
+						</li>
+						<li>
+							<div class="single-list-topics-content">
+								<div class="single-list-topics-icon">
+									<i class="flaticon-transport"></i>
+								</div>
+								<h2><a href="#">automotion</a></h2>
+								<p>120 listings</p>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+		</section> -->
+
+		<!--works start -->
+		<section id="works" class="works" style="margin-top: 70px;">
+			<div class="container">
+				<div class="section-header">
+					<h2>about us</h2>
+					<p>업로드 되는 사진들을 기반으로 병해충을 실시간으로 예측해드립니다.</p>
+				</div><!--/.section-header-->
+				<div class="works-content">
+					<div class="row">
+						<div class="col-md-4 col-sm-6">
+							<div class="single-how-works">
+								<div class="single-how-works-icon">
+									<i class="flaticon-lightbulb-idea"></i>
+								</div>
+								<h2><a href="#">데이터셋 증축</a></h2>
+								<p>
+									업로드 해주시는 이미지의 경우, 기존에 보유하고 있던 데이터셋과 병합하여 더욱 정확한 결과를 제공해드립니다.
+								</p>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-6">
+							<div class="single-how-works">
+								<div class="single-how-works-icon">
+									<i class="flaticon-networking"></i>
+								</div>
+								<h2><a href="#">병해충 분류</a></h2>
+								<p>
+									업로드 해주시는 이미지에 대해 병해충을<br> 실시간으로 예측하고, 그에 알맞는 솔루션을 제공해드립니다.
+								</p>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-6">
+							<div class="single-how-works">
+								<div class="single-how-works-icon">
+									<i class="flaticon-location-on-road"></i>
+								</div>
+								<h2><a href="#">우리만의 커뮤니티</a></h2>
+								<p>
+									게시판에 여러 작물이나 식물과 관련된<br> 정보들, 혹은 일상적인 얘기까지 자유롭게<br> 소통해보세요 👍
+								</p>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-6">
+							<div class="single-how-works">
+								<div class="single-how-works-icon">
+									<i class="flaticon-location-on-road"></i>
+								</div>
+								<h2><a href="#">나에게 필요한 제품까지</a></h2>
+								<p>
+									솔루션과 함께 제공되는 여러 가지 약품과<br> 관련된 제품 링크를 통해 효과적으로 질병을<br> 처리해보세요 😊
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--works end -->
+		<!-- statistics strat -->
+		<!-- <section id="statistics"  class="statistics">
+			<div class="container">
+				<div class="statistics-counter"> 
+					<div class="col-md-3 col-sm-6">
+						<div class="single-ststistics-box">
+							<div class="statistics-content">
+								<div class="counter">90 </div> <span>K+</span>
+							</div>
+							<h3>listings</h3>
+						</div><
+					</div>
+					<div class="col-md-3 col-sm-6">
+						<div class="single-ststistics-box">
+							<div class="statistics-content">
+								<div class="counter">40</div> <span>k+</span>
+							</div>
+							<h3>listing categories</h3>
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-6">
+						<div class="single-ststistics-box">
+							<div class="statistics-content">
+								<div class="counter">65</div> <span>k+</span>
+							</div>
+							<h3>visitors</h3>
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-6">
+						<div class="single-ststistics-box">
+							<div class="statistics-content">
+								<div class="counter">50</div> <span>k+</span>
+							</div>
+							<h3>happy clients</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</section> -->
+
+		<!--blog start -->
+		<section id="blog" class="blog" >
+			<div class="container">
+				<div class="section-header">
+					<h2>인기 게시글</h2>
+					<p>이번주의 인기 게시글을 확인해보세요 ! </p>
+				</div><!--/.section-header-->
+				<div class="blog-content">
+					<div class="row">
+						<div class="col-md-4 col-sm-6">
+							<div class="single-blog-item">
+								<div class="single-blog-item-img">
+									<img src="assets/images/blog/b1.jpg" alt="blog image">
+								</div>
+								<div class="single-blog-item-txt">
+									<h2><a href="#">How to find your Desired Place more quickly</a></h2>
+									<h4>posted <span>by</span> <a href="#">admin</a> march 2018</h4>
+									<p>
+										Lorem ipsum dolor sit amet, consectetur de adipisicing elit, sed do eiusmod tempore incididunt ut labore et dolore magna.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-6">
+							<div class="single-blog-item">
+								<div class="single-blog-item-img">
+									<img src="assets/images/blog/b2.jpg" alt="blog image">
+								</div>
+								<div class="single-blog-item-txt">
+									<h2><a href="#">How to find your Desired Place more quickly</a></h2>
+									<h4>posted <span>by</span> <a href="#">admin</a> march 2018</h4>
+									<p>
+										Lorem ipsum dolor sit amet, consectetur de adipisicing elit, sed do eiusmod tempore incididunt ut labore et dolore magna.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-6">
+							<div class="single-blog-item">
+								<div class="single-blog-item-img">
+									<img src="assets/images/blog/b3.jpg" alt="blog image">
+								</div>
+								<div class="single-blog-item-txt">
+									<h2><a href="#">How to find your Desired Place more quickly</a></h2>
+									<h4>posted <span>by</span> <a href="#">admin</a> march 2018</h4>
+									<p>
+										Lorem ipsum dolor sit amet, consectetur de adipisicing elit, sed do eiusmod tempore incididunt ut labore et dolore magna.
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!--/.container-->
+			
+		</section><!--/.blog-->
+		<!--blog end -->
+
+		<!--subscription strat -->
+		<section id="contact"  class="subscription">
+			<div class="container">
+				<div class="subscribe-title text-center">
+					<h2>
+						do you want to add your business listing with us?
+					</h2>
+					<p>
+						Listrace offer you to list your business with us and we very much able to promote your Business.
+					</p>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="subscription-input-group">
+							<form action="#">
+								<input type="email" class="subscription-input-form" placeholder="Enter your email here">
+								<button class="appsLand-btn subscribe-btn" onclick="window.location.href='#'">
+									creat account
+								</button>
+							</form>
+						</div>
+					</div>	
+				</div>
+			</div>
+
+		</section><!--/subscription-->	
+		<!--subscription end -->
+
+		<!--footer start-->
+		<footer id="footer"  class="footer">
+			<div class="container">
+				<div class="footer-menu">
+		           	<div class="row">
+			           	<div class="col-sm-3">
+			           		 <div class="navbar-header">
+				                <a class="navbar-brand" href="index.html">On<span>Prediction</span></a>
+				            </div><!--/.navbar-header-->
+			           	</div>
+			           	<div class="col-sm-9">
+			           		<ul class="footer-menu-item">
+			                    <li class=" scroll active"><a href="#home">home</a></li>
+			                    <li class="scroll"><a href="#works">about us</a></li>
+			                    <li class="scroll"><a href="#blog">board</a></li>
+			                    <li class="scroll"><a href="#contact">contact</a></li>
+			                </ul><!--/.nav -->
+			           	</div>
+		           </div>
+				</div>
+				<div class="hm-footer-copyright">
+					<div class="row">
+						<div class="col-sm-5">
+							<p>
+								&copy;copyright. designed and developed by <a href="https://www.themesine.com/">themesine</a>
+							</p><!--/p-->
+						</div>
+						<div class="col-sm-7">
+							<div class="footer-social">
+								<a href="#"><i class="fa fa-facebook"></i></a>	
+								<a href="#"><i class="fa fa-twitter"></i></a>
+								<a href="#"><i class="fa fa-linkedin"></i></a>
+								<a href="#"><i class="fa fa-google-plus"></i></a>
+							</div>
+						</div>
+					</div>
+					
+				</div><!--/.hm-footer-copyright-->
+			</div><!--/.container-->
+
+			<div id="scroll-Top">
+				<div class="return-to-top">
+					<i class="fa fa-angle-up " id="scroll-top" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to Top" aria-hidden="true"></i>
+				</div>
+				
+			</div><!--/.scroll-Top-->
+			
+        </footer><!--/.footer-->
+		<script src="assets/js/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+		<script src="assets/js/bootsnav.js"></script>
+        <script  src="assets/js/feather.min.js"></script>
+		<script src="assets/js/jquery.counterup.min.js"></script>
+		<script src="assets/js/waypoints.min.js"></script>
+        <script src="assets/js/slick.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <script src="assets/js/custom.js"></script>
+        
+    </body>
+	
+</html>
