@@ -9,6 +9,7 @@ from werkzeug.utils import secure_filename
 from geti.forms import UserCreateForm, UserLoginForm
 import bcrypt
 import os
+import json
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
@@ -24,12 +25,53 @@ models = {
 }
 
 labels = {
-    '토마토' : {},
-    '감자' : {},
-    '장미' : {},
+    '토마토' : {
+        0 : "세균점무늬병", 
+        1 : "겹무늬병", 
+        2 : "정상", 
+        3 : "잎마름역병", 
+        4 : "잎곰팡이병",
+        5 : "septoria마름병", 
+        6 : "점박이 진드기", 
+        7 : "표적반점", 
+        8 : "모자이크 바이러스", 
+        9 : "황화잎말림바이러스"
+        },
+    '감자' : {
+        0 : "겹둥근무늬병",
+        1 : "정상", 
+        2 : "역병"
+        },
+    '장미' : { # shape=(128, 128, 3)
+        0 : "검은 반점",
+        1 : "노균병", 
+        2 : "정상"
+        },
     '레몬그라스' : {},
-    '목화' : {0 : "진딧물", 1 : "세균성 마름병", 2 : "건강한 상태", 3 : "흰가루병", 4 : "표적반점"},
-    '커피' : {},
+    '목화' : {
+        0 : "진딧물", 
+        1 : "세균성 마름병", 
+        2 : "정상",
+        3 : "흰가루병", 
+        4 : "표적반점"
+        },
+    '커피' : {
+        0 : "세르코스포라",
+        1 : "정상",
+        2 : "녹병",
+        3 : "잠엽충",
+        4 : "포마"
+        }
+}
+
+input_shapes = {
+    "장미" : (128, 128, 3),
+    "커피" : (100, 100, 3),
+    "감자" : (),
+    "목화" : (256, 256, 3),
+    "레몬그라스" : (),
+    "토마토" : (),
+    
 }
 
 def read_image(path):                                   
@@ -55,31 +97,37 @@ def prediction():
         f.close()
         
         with open("./plant_name.txt", "rb") as f:
-            plant_name = f.readline().decode("utf-8").replace("\n", "")
+            plant_name = f.readline().decode("utf-8").replace("\n", "").replace("\r", "")
         
         file = request.files['file']
             
         filename = secure_filename(file.filename)
         file.save(os.path.join(image_path, filename))
         
-        labels = {0 : "진딧물", 1 : "세균성 마름병", 2 : "건강한 상태", 3 : "흰가루병", 4 : "표적반점"} 
-        model = load_model(models[plant_name])
+        label = labels[plant_name] 
+        model = load_model(models[plant_name], compile=False)
         img = read_image(os.path.join(image_path, filename))
-        img = tf.image.resize(img, (256, 256))
+        print(input_shapes[plant_name][:2])
+        img = tf.image.resize(img, input_shapes[plant_name][:2])
         image = np.array(img)
         image = image[:, :, :]
         test_image = image[tf.newaxis, ...]
         pred = model.predict(test_image, verbose = 0)
         
-        result = labels[np.argmax(pred)]
+        result = label[np.argmax(pred)]
         flash("예측이 완료되었습니다.") # values = [result, filename, plant_name]
+        
+        with open(r"D:\Intel\GETI\disease.json", 'r', encoding="utf-8") as f:
+            json_data = json.load(f)
         
         values = {
             "result" : result,
             "filename" : filename,
-            "plant_name" : plant_name
+            "plant_name" : plant_name,
+            "solutions" : json_data[plant_name][result]
         }
-        return redirect(url_for('main.prediction', values = values))
+        
+        return render_template("functions/prediction.html", values = values)
         
     return render_template("functions/prediction.html")
 
