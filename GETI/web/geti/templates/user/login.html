@@ -27,15 +27,18 @@
             <div class="title  mt-4 p-4 w-100">
               <h1>Sign In</h1>
             </div>
-            <form method="post" name="form" class="form  w-100 p-4" id="form" action="{{url_for('main.login')}}">
+            <form method="post" name="form" class="form  w-100 p-4" id="form">
+              {{ form.csrf_token }}
               <div class="form-group">
                 <label for="userid" class="floatLabel">ID</label>
-                <input type="text" name="userid" class="form-control" id="userid" onfocus="labelUp(this)" onblur="labelDown(this)" required />
+                <input type="text" name="userid" class="form-control" id="userid"
+                value="{{form.userid.data or ''}}" onfocus="labelUp(this)" onblur="labelDown(this)" required />
               </div>
               <div class="form-group">
                 <label for="password" class="floatLabel">PW</label>
                 <i class="fa fa-eye-slash" id="eye_icon_login"></i>
-                <input type="password" name="password" class="form-control" id="password" onfocus="labelUp(this)" onblur="labelDown(this)" required />
+                <input type="password" name="password" class="form-control" id="password"
+                value="{{form.password.data or ''}}" onfocus="labelUp(this)" onblur="labelDown(this)" required />
               </div>
               <div class="form-group mb-0">
                 <button type="submit" class="btn btn-primary register_btn w-100">로그인</button>
@@ -50,7 +53,7 @@
             </form>
 
             <div class="already_member_box d-flex justify-content-between px-4">
-              <span class="text-center" id="to_signup">회원이 아니신가요?</span>
+              <span class="text-center" id="to_signup"><a href="{{ url_for('main.sign_up') }}">회원이 아니신가요?</a></span>
               <span class="text-center">비밀번호 찾기</span>
             </div>
           </div>
