@@ -1,0 +1,171 @@
+<!doctype html>
+<html class="no-js" lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <title>질병 분류 프로그램</title>
+    <link rel="shortcut icon" type="image/icon" href="assets/logo/favicon.png"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/board_detail.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/board.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/linearicons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slick.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slick-theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootsnav.css') }}" >	
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Serif+KR:wght@300&family=Gothic+A1:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+    {%with messages = get_flashed_messages()%}
+        {%if messages %}
+            <script type="text/javascript">
+                alert("{{messages[-1]}}");
+            </script>
+        {%endif%}
+    {%endwith%}
+    <section class="top-area">
+        <div class="header-area">
+            <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy"  data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <a class="navbar-brand" href="/">On<span>Prediction</span></a>
+                    </div>
+
+                    <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+                        <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                            <li class=" scroll active"><a href="{{ url_for('main.hello') }}">home</a></li>
+                            <li class="scroll"><a href="#works">about us</a></li>
+                            <li class="scroll"><a href="{{ url_for('function.board') }}">board</a></li>
+                            <li class="scroll"><a href="{{ url_for('main.prediction') }}">Classification</a></li>
+                            {% if g.user %}
+                                <li class="scroll"><a href="/">{{g.user.username}}님, 환영합니다</a></li>
+                                <li class="scroll"><a href="{{ url_for('main.logout') }}">로그아웃</a></li>
+                            {% else %}
+                                <li class="scroll"><a href="{{ url_for('main.login') }}">로그인</a></li>
+                                <li class="scroll"><a href="{{ url_for('main.sign_up') }}">회원가입</a></li>
+                            {% endif %}
+                            <li class="head-responsive-right pull-right"></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="clearfix"></div>
+    </section>
+    
+    {% if question %}
+        <div class="post-detail" style="width: 900px; display: flex; flex-direction: column; height: 100%; align-items: flex-start;">
+            <hr style="width: 900px;">
+            <div class="items1">
+                <h1>{{question.subject}}</h1>
+                <p style="margin-top: 10px;">작성자 : {{question.user_id}}</p>
+                <p style="margin-top: 10px;">작성일 : {{question.create_date|datetime}}</p>
+                <hr style="width: 900px;">
+                <p style="margin-top: 10px;">{{question.content}}</p>
+            </div>
+            <hr style="width: 900px;">
+            <h5 style="margin-top: 20px;">답변 {{ question.answer_set|length }}</h5>
+            <hr style="width: 900px;">
+            <div class="items1" style="margin-top: 10px;">
+                <ul>
+                {% for answer in question.answer_set %}
+                    <li style="margin-top: 5px;"> • {{ answer.content }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            <hr style="width: 900px;">
+            <label for="content">답변 등록하기</label>
+            <form action="{{ url_for('function.create', question_id=question.id) }}" method="post" class="items1" style="margin-top: 20px;">
+                <textarea name="content" id="content" rows="15"></textarea>
+                <input type="submit" value="답변등록" id="submitBtn">
+            </form>
+        </div>
+    {% endif %}
+    <footer id="footer"  class="footer">
+        <div class="container">
+            <!-- <div class="footer-menu">
+                   <div class="row">
+                       <div class="col-sm-3">
+                            <div class="navbar-header">
+                            <a class="navbar-brand" href="index.html">On<span>Prediction</span></a>
+                        </div>
+                       </div>
+                       <div class="col-sm-9">
+                           <ul class="footer-menu-item">
+                            <li class=" scroll active"><a href="#home">home</a></li>
+                            <li class="scroll"><a href="#works">about us</a></li>
+                            <li class="scroll"><a href="#blog">board</a></li>
+                            <li class="scroll"><a href="#contact">classification</a></li>
+                        </ul>
+                       </div>
+               </div>
+            </div> -->
+            <div class="hm-footer-copyright">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <div class="footer-social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>	
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                            <a href="#"><i class="fa fa-google-plus"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        <div id="scroll-Top">
+            <div class="return-to-top">
+                <i class="fa fa-angle-up " id="scroll-top" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to Top" aria-hidden="true"></i>
+            </div>
+        </div>
+        
+    </footer>
+</body>
+</html>
+<style>
+    .items1:nth-child(1) { flex-grow: 1; }
+    .items1:nth-child(2) { flex-grow: 2; }
+    .items1:nth-child(3) { flex-grow: 1; }
+
+    textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    font-size: 16px;
+    resize: none;
+    width: 900px;
+    }
+
+    textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+    }
+
+    textarea:hover {
+    border-color: #66afe9;
+    }
+
+    #submitBtn{
+        background-color: #04AA6D; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin-left:770px;
+    }
+</style>
