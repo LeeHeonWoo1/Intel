@@ -19,7 +19,7 @@ models = {
     '토마토' : r"C:\Users\OWNER\Desktop\plant dataset\models\tomato.h5",
     "감자" : r"C:\Users\OWNER\Desktop\plant dataset\models\potato.h5",
     "장미" : r"C:\Users\OWNER\Desktop\plant dataset\models\rose.h5",
-    "레몬그라스" : r"",
+    "레몬그라스" : r"C:\Users\OWNER\Desktop\plant dataset\models\lemongrass.h5",
     "목화" : r"D:\Intel\GETI\cotten_model\weights\GlobalAveragePooling2D-30.h5",
     "커피" : r"C:\Users\OWNER\Desktop\plant dataset\models\coffee.h5"
 }
@@ -47,7 +47,11 @@ labels = {
         1 : "노균병", 
         2 : "정상"
         },
-    '레몬그라스' : {},
+    '레몬그라스' : {
+        0 : "마름병",
+        1 : "정상",
+        2 : "녹병"
+        },
     '목화' : {
         0 : "진딧물", 
         1 : "세균성 마름병", 
@@ -66,17 +70,17 @@ labels = {
 
 input_shapes = {
     "장미" : (128, 128, 3),
-    "커피" : (100, 100, 3),
-    "감자" : (),
+    "커피" : (50, 50, 3),
+    "감자" : (256, 256, 3),
     "목화" : (256, 256, 3),
-    "레몬그라스" : (),
-    "토마토" : (),
+    "레몬그라스" : (150, 150, 3),
+    "토마토" : (128, 128, 3),
     
 }
 
 def read_image(path):                                   
     gfile = tf.io.read_file(path)                       
-    image = tf.io.decode_image(gfile, dtype=tf.float32) 
+    image = tf.io.decode_image(gfile, dtype=tf.float32, channels=3) 
     return image
 
 @bp.route('/')
@@ -107,7 +111,6 @@ def prediction():
         label = labels[plant_name] 
         model = load_model(models[plant_name], compile=False)
         img = read_image(os.path.join(image_path, filename))
-        print(input_shapes[plant_name][:2])
         img = tf.image.resize(img, input_shapes[plant_name][:2])
         image = np.array(img)
         image = image[:, :, :]
