@@ -1,0 +1,229 @@
+<!doctype html>
+<html class="no-js" lang="ko">
+<head>
+    <meta charset="euc-kr">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <title>질병 분류 프로그램</title>
+    <link rel="shortcut icon" type="image/icon" href="assets/logo/favicon.png"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='prediction/pred.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='prediction/dropdown.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/board.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/linearicons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slick.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slick-theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootsnav.css') }}" >	
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Serif+KR:wght@300&family=Gothic+A1:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+    <section class="top-area">
+        <div class="header-area">
+            <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy"  data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <a class="navbar-brand" href="/">On<span>Prediction</span></a>
+                    </div>
+
+                    <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+                        <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                            <li class=" scroll active"><a href="{{ url_for('main.hello') }}">home</a></li>
+                            <li class="scroll"><a href="#works">about us</a></li>
+                            <li class="scroll"><a href="{{ url_for('function.board') }}">board</a></li>
+                            <li class="scroll"><a href="{{ url_for('main.prediction') }}">classification</a></li>
+                            {% if g.user %}
+                                <li class="scroll"><a href="/">{{g.user.username}}님, 환영합니다</a></li>
+                                <li class="scroll"><a href="{{ url_for('main.logout') }}">로그아웃</a></li>
+                            {% else %}
+                                <li class="scroll"><a href="{{ url_for('main.login') }}">로그인</a></li>
+                                <li class="scroll"><a href="{{ url_for('main.sign_up') }}">회원가입</a></li>
+                            {% endif %}
+                            <li class="head-responsive-right pull-right"></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="clearfix"></div>
+    </section>
+    <section id="home" class="welcome-hero" style="background-image:url({{url_for('static', filename='headers.jpg')}}); height: 400px;">
+        <div class="container">
+            <!-- <img src="{{ url_for('static', filename='smart_farm.jpg') }}"> -->
+            <div class="welcome-hero-txt">
+                <h2 style="font-family: 'BlackHanSans-Regular'">이미지 분류 페이지😊</h2>
+                <p>
+                    이미지 업로드 후, 나에게 맞는 솔루션을 받아보세요 👍
+                </p>
+            </div>
+        </div>
+    </section>
+    {%with messages = get_flashed_messages()%}
+        {%if messages %}
+            <script type="text/javascript">
+                alert("{{messages[-1]}}");
+            </script>
+        {%endif%}
+    {%endwith%}
+    {% if not values %}
+        <section class="vbox"> 
+            <div class="items">
+                <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+                <main id="main_full">
+                    <label for=".select_box">어떤 작물인가요?</label>
+                    <form method="post" enctype = "multipart/form-data" action="{{ url_for('main.prediction') }}">
+                        <div class="select_box">
+                            <select class="bo_w_select" id="plant_select" name="plant_name" onchange="this.form.selectedIndex.value">
+                                <option value="토마토">토마토</option>
+                                <option value="감자">감자</option>
+                                <option value="장미">장미</option>
+                                <option value="레몬그라스">레몬그라스</option>
+                                <option value="목화">목화</option>
+                                <option value="커피">커피</option>
+                            </select>
+                        </div>
+                        <!-- <input type="submit" class="button btnFade btnLightBlue" value="예측하기"> -->
+                        <div class="container" id="main_container">
+                            <div class="panel" style="margin-bottom: 150px;">
+                                <div class="button_outer">
+                                    <div class="btn_upload">
+                                        <input type="file" id="upload_file" name="file">
+                                        load your Image :)
+                                    </div>
+                                    <div class="processing_bar"></div>
+                                    <div class="success_box"></div>
+                                </div>
+                            </div>
+                            <div class="error_msg"></div>
+                            <div class="uploaded_file_view" id="uploaded_view">
+                                <span class="file_remove">X</span>
+                            </div>
+                        </div>
+                    </form>
+                </main>
+            </div>
+        </section>
+        {% else %}
+            <section id="main-area" style="display: flex; justify-content: center; margin-top: 40px;">
+                <div class="results">
+                    <div align="center">
+                        <img src="{{ url_for('static', filename='pred_imgs/'+values['filename'] ) }}" id="result_img">
+                    </div>
+                    <h2 class="result_of_prediction" style="margin-top: 40px;">분류된 질병은 <b>{{values['result']}}</b> 질병입니다.</h2>
+                    {% for key, val in values['solutions'].items() %}
+                        {% if key != "제품링크/filename" %}
+                            <h3 style="margin-top: 20px;"><b>{{key}}</b></h3>
+                            {% for sol in val.split("\n") %}
+                                <li style="margin-top: 20px;">
+                                    • {{sol}}
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                        <h3 style="margin-top: 20px;"><b>제품 링크</b></h3>
+                            {% for links in val %}
+                                <a href="{{links.split('\n')[0]}}">
+                                    <img src="{{url_for('static', filename='product_for_disease/'+links.split('\n')[1])}}" style="width: 300px; height: 100px; margin-top: 10px;">
+                                </a>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </section>
+            <footer id="footer"  class="footer">
+                <div class="container">
+                    <!-- <div class="footer-menu">
+                           <div class="row">
+                               <div class="col-sm-3">
+                                    <div class="navbar-header">
+                                    <a class="navbar-brand" href="index.html">On<span>Prediction</span></a>
+                                </div>
+                               </div>
+                               <div class="col-sm-9">
+                                   <ul class="footer-menu-item">
+                                    <li class=" scroll active"><a href="{{url_for('main.hello')}}">home</a></li>
+                                    <li class="scroll"><a href="#works">about us</a></li>
+                                    <li class="scroll"><a href="{{url_for('function.board')}}">board</a></li>
+                                    <li class="scroll"><a href="{{url_for('main.prediction')}}">classification</a></li>
+                                </ul>
+                               </div>
+                       </div> -->
+                    </div>
+                    <div class="hm-footer-copyright" style="margin-top: 80px;">
+                        <div class="row">
+                            <!-- <div class="col-sm-7">
+                                <div class="footer-social">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>	
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-linkedin"></i></a>
+                                    <a href="#"><i class="fa fa-google-plus"></i></a>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="scroll-Top">
+                    <div class="return-to-top">
+                        <i class="fa fa-angle-up " id="scroll-top" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to Top" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </footer>
+        {% endif %}
+</body>
+</html>
+<script>
+    var btnUpload = $("#upload_file"),
+    btnOuter = $(".button_outer");
+    btnUpload.on("change", function (e) {
+    var ext = btnUpload.val().split(".").pop().toLowerCase();
+    if ($.inArray(ext, ["gif", "png", "jpg", "jpeg"]) == -1) {
+        $(".error_msg").text("Not an Image...");
+    } else {
+        $(".error_msg").text("");
+        btnOuter.addClass("file_uploading");
+        setTimeout(function () {
+        btnOuter.addClass("file_uploaded");
+        }, 3000);
+        var uploadedFile = URL.createObjectURL(e.target.files[0]);
+        setTimeout(function () {
+        $("#uploaded_view")
+            .append('<img src="' + uploadedFile + '" class="flex-item1" />', )
+            .append('<input type="submit" class="button btnFade btnLightBlue" value="예측하기" id="flex-item1">')
+            .addClass("show");
+        }, 3500);
+    }
+    });
+    $(".file_remove").on("click", function (e) {
+    $("#uploaded_view").removeClass("show");
+    $("#uploaded_view").find("img").remove();
+    btnOuter.removeClass("file_uploading");
+    btnOuter.removeClass("file_uploaded");
+    });
+
+    function changeFn(){
+		var city  = document.getElementById("plant_select");
+		var value = (city.options[city.selectedIndex].value);
+        var fileInput = document.getElementById("upload_file");
+		
+        var formData = new FormData();
+        formData.append('plant_name', value);
+        formData.append('image', fileInput.files[0]);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/predict", true);
+        xhr.send(formData);
+	};
+
+    
+</script>
+<style>
+    #uploaded_view{
+        display: flex;
+        flex-direction: column;
+    }
+</style>
