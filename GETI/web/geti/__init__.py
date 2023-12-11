@@ -18,7 +18,15 @@ def create_app():
     migrate.init_app(app, db)
     from . import models
 
-    from .views import view
+    from .views import view, func_view
+    from . import filter
     app.register_blueprint(view.bp)
+    app.register_blueprint(func_view.bp_func)
+    
+    app.jinja_env.filters['datetime'] = filter.format_datetime
+    app.jinja_env.filters['calculate'] = filter.calculate_total_page_cnt
+    app.jinja_env.globals.update(
+        enumerate = enumerate
+    )
 
     return app
