@@ -7,35 +7,41 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="{{ url_for('main.sign_upload') }}" method="post">
+    <form method="post">
+        {{ form.csrf_token }}
         <h2>Sign Up</h2>
             <p>
                 <label for="username" class="floatLabel">이름</label>
-                <input id="username" name="username" type="text" autocomplete="on" required>
+                <input id="username" name="username" type="text" 
+                value = "{{ form.username.data or '' }}" required>
             </p>    
             <p>
                 <label for="userid" class="floatLabel">ID</label>
-                <input id="userid" name="userid" type="text" autocomplete="on" required>
+                <input id="userid" name="userid" type="text"
+                value = "{{ form.userid.data or '' }}" required>
             </p>
             <p>
-                <label for="password" class="floatLabel">Password</label>
-                <input id="password" name="password" type="password"autocomplete="on" required>
+                <label for="password1" class="floatLabel">Password</label>
+                <input id="password1" name="password1" type="password"
+                value = "{{ form.password1.data or '' }}" required>
             </p>
             <p>
-                <label for="confirm_password" class="floatLabel">Confirm Password</label>
-                <input id="confirm_password" name="confirm_password" type="password" autocomplete="on" required>
+                <label for="password2" class="floatLabel">Confirm Password</label>
+                <input id="password2" name="password2" type="password"
+                value = "{{ form.password2.data or '' }}"  required>
             </p>
             <p>
-                <label for="user_phone" class="floatLabel">휴대폰 번호</label>
-                <input id="user_phone" name="user_phone" type="text" autocomplete="on" required>
+                <label for="phone" class="floatLabel">휴대폰 번호</label>
+                <input id="phone" name="phone" type="text"
+                value = "{{ form.phone.data or '' }}" required>
             </p>
             <p>
                 <input type="submit" value="회원가입" id="submit">
                 {%with messages = get_flashed_messages()%}
-                {%if messages %}
-                    <script type="text/javascript">
-                        alert("{{messages[-1]}}");
-                    </script>
+                    {%if messages %}
+                        <script type="text/javascript">
+                            alert("{{messages[-1]}}");
+                        </script>
                     {%endif%}
                 {%endwith%}
             </p>
