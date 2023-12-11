@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from datetime import datetime
 from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired, Length, EqualTo
 
@@ -16,3 +17,7 @@ class UserCreateForm(FlaskForm):
 class UserLoginForm(FlaskForm):
     userid = StringField('사용자이름', validators=[DataRequired(), Length(min=3, max=25)])
     password = PasswordField('비밀번호', validators=[DataRequired()])
+    
+class NewQuestionForm(FlaskForm):
+    subject = StringField("제목", validators=[DataRequired()])
+    content = StringField("본문", validators=[DataRequired()])
