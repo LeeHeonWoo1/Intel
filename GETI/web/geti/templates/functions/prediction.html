@@ -43,7 +43,7 @@
                                 <li class="scroll"><a href="{{ url_for('main.logout') }}">로그아웃</a></li>
                             {% else %}
                                 <li class="scroll"><a href="{{ url_for('main.login') }}">로그인</a></li>
-                                <li class="scroll"><a href="{{ url_for('main.sign_up') }}">회원가입</a></li>
+                                <li class="scroll"><a href="{{ url_for('main.user_agree') }}">회원가입</a></li>
                             {% endif %}
                             <li class="head-responsive-right pull-right"></li>
                         </ul>
@@ -76,17 +76,19 @@
             <div class="items">
                 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
                 <main id="main_full">
-                    <label for=".select_box">어떤 작물인가요?</label>
+                    <label for="selection">어떤 작물인가요?</label>
                     <form method="post" enctype = "multipart/form-data" action="{{ url_for('main.prediction') }}">
-                        <div class="select_box">
-                            <select class="bo_w_select" id="plant_select" name="plant_name" onchange="this.form.selectedIndex.value">
-                                <option value="토마토">토마토</option>
-                                <option value="감자">감자</option>
-                                <option value="장미">장미</option>
-                                <option value="레몬그라스">레몬그라스</option>
-                                <option value="목화">목화</option>
-                                <option value="커피">커피</option>
-                            </select>
+                        <div class="main_cont">
+                            <div class="select_box" id="selection">
+                                <select class="bo_w_select" id="plant_select" name="plant_name" onchange="this.form.selectedIndex.value">
+                                    <option value="토마토">토마토</option>
+                                    <option value="감자">감자</option>
+                                    <option value="장미">장미</option>
+                                    <option value="레몬그라스">레몬그라스</option>
+                                    <option value="목화">목화</option>
+                                    <option value="커피">커피</option>
+                                </select>
+                            </div>
                         </div>
                         <!-- <input type="submit" class="button btnFade btnLightBlue" value="예측하기"> -->
                         <div class="container" id="main_container">
@@ -137,33 +139,10 @@
             </section>
             <footer id="footer"  class="footer">
                 <div class="container">
-                    <!-- <div class="footer-menu">
-                           <div class="row">
-                               <div class="col-sm-3">
-                                    <div class="navbar-header">
-                                    <a class="navbar-brand" href="index.html">On<span>Prediction</span></a>
-                                </div>
-                               </div>
-                               <div class="col-sm-9">
-                                   <ul class="footer-menu-item">
-                                    <li class=" scroll active"><a href="{{url_for('main.hello')}}">home</a></li>
-                                    <li class="scroll"><a href="#works">about us</a></li>
-                                    <li class="scroll"><a href="{{url_for('function.board')}}">board</a></li>
-                                    <li class="scroll"><a href="{{url_for('main.prediction')}}">classification</a></li>
-                                </ul>
-                               </div>
-                       </div> -->
                     </div>
                     <div class="hm-footer-copyright" style="margin-top: 80px;">
                         <div class="row">
-                            <!-- <div class="col-sm-7">
-                                <div class="footer-social">
-                                    <a href="#"><i class="fa fa-facebook"></i></a>	
-                                    <a href="#"><i class="fa fa-twitter"></i></a>
-                                    <a href="#"><i class="fa fa-linkedin"></i></a>
-                                    <a href="#"><i class="fa fa-google-plus"></i></a>
-                                </div> -->
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -193,7 +172,7 @@
         setTimeout(function () {
         $("#uploaded_view")
             .append('<img src="' + uploadedFile + '" class="flex-item1" />', )
-            .append('<input type="submit" class="button btnFade btnLightBlue" value="예측하기" id="flex-item1">')
+            .append('<input type="submit" value="예측하기" class="flex-item1">')
             .addClass("show");
         }, 3500);
     }
@@ -222,6 +201,11 @@
     
 </script>
 <style>
+    .main_cont{
+        display: flex;
+        flex-direction: row;
+    }
+
     #uploaded_view{
         display: flex;
         flex-direction: column;

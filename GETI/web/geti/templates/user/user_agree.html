@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+</head>
+<body>
+    {%with messages = get_flashed_messages()%}
+        {%if messages %}
+            <script type="text/javascript">
+                alert("{{messages[-1]}}");
+            </script>
+        {%endif%}
+    {%endwith%}
+    <section id="title" class="item">
+        <h1 align="center">개인정보의 수집 및 이용 동의</h1>
+    </section>
+
+    <form method="post" action="{{url_for('main.user_agree')}}">
+        <section id="condition1" align="center">
+            <textarea readonly>
+    1. 개인정보의 수집 및 이용 목적
+    가. 회원 관리
+        - 회원제 서비스 이용 및 제한적 본인 확인제에 따른 본인확인, 개인식별, 가입의사 확인, 가입 및 가입횟수 제한, 추후 법정 대리인 본인확인, 분쟁 조정을   위한 기록보존, 불만처리 등 민원처리, 공지사항 전달 등을 목적으로 개인정보를 처리합니다.
+    나. 정부지원사업 신청 및 선정기업(학교) 관계자 관리
+        - "중소기업기술 보호 지원에 관한 법률" 등 법령에 근거하여 시행하는 정부지원사업 행정규칙(법령, 요령, 지침 등) 내용에 따라 신청(지원)기업의 대표자,   참여자 등의 관리, 신청·선정·협약 등에 필요한 자격(의무사항 불이행, 참여제한, 참여율 등)여부 확인, 보고·사후관리·통계 등의 목적으로 개인정보를
+        처리합니다.
+    다. 정부지원사업 평가위원, 전문가 등의 관리
+        - 정부지원사업(법령, 요령, 지침 등)에서 정한 평가위원·전문가 등의 자격확인, 평가참여이력 등의 행정업무를 목적으로 개인정보를 처리합니다.
+    라. 민원사무 처리
+        - 민원인의 신원 확인, 민원사항 확인, 사실조사를 위한 연락·통지, 처리결과 통보 등을 목적으로 개인정보를 처리합니다.
+    마. 기술보호지원 서비스 제공
+        - 콘텐츠 제공, 특정 맞춤 서비스 제공, 서비스 유지보수 및 기능개선, 본인인증 등을 목적으로 개인정보를 처리합니다.
+    바. 홍보 등의 활용
+        - 신규 또는 매년 공고되는 정부지원사업의 안내, 정부지원사업 참여자에 대한 의무사항, 성과조사 등의 안내, 정책적 참조를 위한 설문조사 요청, 접속빈도
+        파악 또는 회원의 서비스 이용에 대한 통계, 이벤트 및 홍보성 정보 제공 등을 목적으로 개인정보를 처리합니다.
+            </textarea>
+            <div class="container">
+                <h3>개인정보 수집에 동의합니다</h3>
+                <input type="checkbox" id="cbtest1" name="agree1">
+                <label for="cbtest1" class="cb1"></label>
+            </div>
+        </section>
+    
+        <section id="condition2" align="center">
+            <textarea readonly>
+    2. 수집하는 개인정보의 항목
+    가. 일반회원 가입
+        ① 필수항목
+            - 성명, 아이디, 비밀번호, 일반전화번호, 휴대전화번호
+        ② 선택항목
+            - 팩스번호, 직장사업자번호, 직장명, 부서, 직위, 회사주소
+    나. 전문가회원 가입
+        ① 필수항목
+            - 개인정보 : 성명, 아이디, 이메일, 소속기관, 부서, 직위, 일반전화번호, 휴대전화번호, 직장주소
+            - 학력사항 : 출신학교, 전공, 학위, 입학일자, 증명서류 , 근무처, 근무부서, 직급, 입사일자, 업무내용, 증명서류
+        ② 선택항목
+            - 개인정보 : 스번호, 은행명, 계좌번호, 자택주소
+            - 학력사항 : 지도교수명, 졸업일자, 논문명
+            - 경력사항 : 퇴사일자
+            - 연구논문 : 연구제목, 발행년월, 게재처, 번호, 주저자명, 공동저자, 책임저자, SCI논문여부, ISBN, 증명서류
+            - 자격증 및 포상 : 취득년도, 자격(포상)명, 자격번호, 포상등급, 발행기관, 증명서류
+            - 학회 및 협회활동 : 학회명, 직위, 시작일, 종료일, 담당업무, 증명서류
+            - 정부출연과제수행실적 : 시행부처명, 시행년도, 사업명, 과제명, 시작일, 종료일, 정부출연금, 참여역할, 평가결과, 출연기관명
+            - 지식재산권 : 특허형태, 특허명, 출원번호, 출원일자, 출원자명, 발명자명, 특허공개번호, 공개일자, 등록번호, 등록일자, 소속기관, 등록국가, PCT출원
+            여부, 사업화여부, 증명서류
+        다. 자동수집
+            IP 주소, 쿠키, 서비스 이용 기록, 방문기록 등
+            </textarea>
+            <div class="container">
+                <h3>개인정보 이용에 동의합니다</h3>
+                <input type="checkbox" id="cbtest2" name="agree2">
+                <label for="cbtest2" class="cb2"></label>
+            </div>
+        </section>
+        <section align="center">
+            <button type="submit" id="submitBtn">회원가입</button>
+        </section>
+    </form>
+</body>
+</html>
+<style>
+    *{
+        font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    /* body{
+        background-color: blanchedalmond;
+    } */
+
+    textarea {
+        padding: 10px;
+        border-radius: 5px;
+        border: 2px solid #ccc;
+        font-size: 16px;
+        height: 450px;
+        resize: none;
+        width: 900px;
+    }
+
+    textarea:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        outline: none;
+    }
+
+    .container {
+        text-align: center; 
+        flex-direction: row;
+    }
+    .cb1,
+    .cb2 {
+        height: 20px;
+        width: 20px;
+        background-color: transparent;
+        border: 2px solid #000;
+        border-radius: 5px;
+        box-sizing: border-box;
+        position: relative;
+        display: inline-block;
+        transition: border-color ease 0.2s;
+        cursor: pointer;
+    }
+    .cb2 {
+        border-radius: 50%;
+    }
+    .cb1::before, .cb1::after,
+    .cb2::before, .cb2::after {
+        position: absolute;
+        height: 0;
+        width: 4px;
+        background-color: #34b93d;
+        box-sizing: border-box;
+        display: inline-block;
+        transform-origin: left top;
+        border-radius: 5px;
+        content: ' ';
+        transition: opacity ease 0.5;
+    }
+    .cb2::before, .cb2::after {
+        background-color: #4285f4;
+    }
+    .cb1::before,
+    .cb2::before {
+        top: 14.4px;
+        left: 8.2px;
+        box-shadow: 0 0 0 1px transparent;
+        transform: rotate(-135deg);
+    }
+    .cb1::after,
+    .cb2::after {
+        top: 7.4px;
+        left: 1px;
+        transform: rotate(-45deg);
+    }
+    input[id="cbtest1"]:checked + .cb1 {
+        border-color: #34b93d;
+    }
+    input[id="cbtest2"]:checked + .cb2 {
+        border-color: #4285f4;
+    }
+    input[id="cbtest1"]:checked + .cb1::after,
+    input[id="cbtest2"]:checked + .cb2::after {
+        height: 10px;
+        animation: bottomcheck 0.2s ease 0s forwards;
+    }
+    input[id="cbtest1"]:checked + .cb1::before,
+    input[id="cbtest2"]:checked + .cb2::before {
+        height: 24px;
+        animation: topcheck 0.4s ease 0s forwards;
+    }
+    input {
+        display: none;
+    }
+    @keyframes bottomcheck {
+        0% {
+            height: 0;
+        }
+        100% {
+            height: 10px;
+        }
+    }
+    @keyframes topcheck {
+        0% {
+            height: 0;
+        }
+        50% {
+            height: 0;
+        }
+        100% {
+            height: 24px;
+        }
+    }
+
+    #submitBtn{
+        background-color: #04AA6D; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+
+        margin-top: 10px;
+        font-size: 16px;
+    }
+
+</style>
