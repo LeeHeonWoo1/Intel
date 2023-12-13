@@ -134,6 +134,21 @@ def prediction():
         
     return render_template("functions/prediction.html")
 
+@bp.route("/user_agree", methods=('GET', 'POST'))
+def user_agree():
+    if request.method == 'POST':
+        check1 = request.form.get('agree1')
+        check2 = request.form.get('agree2')
+        
+        if check1 == 'on' and check2 == 'on':
+            flash("회원가입 화면으로 이동합니다.")
+            return redirect(url_for('main.sign_up'))
+        else:
+            flash('두 항목 모두 동의해야 하며, 하나라도 동의하지 않을 시 서비스 이용이 불가합니다.')
+            return redirect(url_for("main.user_agree"))
+    
+    return render_template('user/user_agree.html')
+
 @bp.route("/sign_up/", methods=('GET', 'POST'))
 def sign_up():
     form = UserCreateForm()
