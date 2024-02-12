@@ -39,7 +39,7 @@ video
 면접.md
 mp3_files
 test_image
-BubbleData
+BubbleDataset
 chromedriver.exe
 nlp
 NLP_Project/nlp_project
@@ -71,3 +71,4 @@ package-lock.json
 package.json
 my_cotten_data
 static
+data2
